@@ -73,6 +73,18 @@ build CMakeFiles/programming_btc.dir/test_main.cpp.o: CXX_COMPILER__programming_
   OBJECT_DIR = CMakeFiles/programming_btc.dir
   OBJECT_FILE_DIR = CMakeFiles/programming_btc.dir
 
+build CMakeFiles/programming_btc.dir/sha256.cpp.o: CXX_COMPILER__programming_btc_Debug /home/cc1/cpp/programming_btc/sha256.cpp || cmake_object_order_depends_target_programming_btc
+  DEP_FILE = CMakeFiles/programming_btc.dir/sha256.cpp.o.d
+  FLAGS = -g -fdiagnostics-color=always -std=gnu++23
+  OBJECT_DIR = CMakeFiles/programming_btc.dir
+  OBJECT_FILE_DIR = CMakeFiles/programming_btc.dir
+
+build CMakeFiles/programming_btc.dir/_ripemd160.cpp.o: CXX_COMPILER__programming_btc_Debug /home/cc1/cpp/programming_btc/$ ripemd160.cpp || cmake_object_order_depends_target_programming_btc
+  DEP_FILE = CMakeFiles/programming_btc.dir/_ripemd160.cpp.o.d
+  FLAGS = -g -fdiagnostics-color=always -std=gnu++23
+  OBJECT_DIR = CMakeFiles/programming_btc.dir
+  OBJECT_FILE_DIR = CMakeFiles/programming_btc.dir
+
 
 # =============================================================================
 # Link build statements for EXECUTABLE target programming_btc
@@ -81,7 +93,7 @@ build CMakeFiles/programming_btc.dir/test_main.cpp.o: CXX_COMPILER__programming_
 #############################################
 # Link the executable programming_btc
 
-build programming_btc: CXX_EXECUTABLE_LINKER__programming_btc_Debug CMakeFiles/programming_btc.dir/AVLTree.cpp.o CMakeFiles/programming_btc.dir/secp256k1.cpp.o CMakeFiles/programming_btc.dir/main.cpp.o CMakeFiles/programming_btc.dir/test_main.cpp.o
+build programming_btc: CXX_EXECUTABLE_LINKER__programming_btc_Debug CMakeFiles/programming_btc.dir/AVLTree.cpp.o CMakeFiles/programming_btc.dir/secp256k1.cpp.o CMakeFiles/programming_btc.dir/main.cpp.o CMakeFiles/programming_btc.dir/test_main.cpp.o CMakeFiles/programming_btc.dir/sha256.cpp.o CMakeFiles/programming_btc.dir/_ripemd160.cpp.o
   FLAGS = -g
   OBJECT_DIR = CMakeFiles/programming_btc.dir
   POST_BUILD = :

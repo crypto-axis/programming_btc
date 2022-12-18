@@ -45,10 +45,9 @@ protected:
 class S256Field : public FieldElement {
 public:
     S256Field(const bmp::uint256_t & num);
+    std::string str() const;
 
-protected:
-    bmp::uint256_t P = 2^256 - 2^32 - 977;
-//    bmp::uint256_t N = bmp::uint256_t ("0xfffffffffffffffffffffffffffffffebaaedce6af48a03bbfd25e8cd0364141");
+    const bmp::uint256_t P = bmp::uint256_t("115792089237316195423570985008687907853269984665640564039457584007908834671663");
 };
 
 class Point{
@@ -74,11 +73,11 @@ class S256Point : public Point {
 public:
     S256Point();
     S256Point(const S256Field& x, const S256Field& y);
+    Point operator*(bmp::int512_t const& coefficient);
 
-protected:
-    bmp::uint256_t A = 0;
-    bmp::uint256_t B = 7;
-    bmp::uint256_t N = bmp::uint256_t ("0xfffffffffffffffffffffffffffffffebaaedce6af48a03bbfd25e8cd0364141");
+    const bmp::uint256_t A = 0;
+    const bmp::uint256_t B = 7;
+    const bmp::uint256_t N = bmp::uint256_t("0xfffffffffffffffffffffffffffffffebaaedce6af48a03bbfd25e8cd0364141");
 
 };
 

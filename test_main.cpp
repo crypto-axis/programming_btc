@@ -235,13 +235,38 @@ void test_point_mult(){
         }
         else p2 = {infinity,infinity,a,b};
 
-//        std::cout << (p1 * s).str() << " - " << p2.str() << std::endl;
 
         assert((p1 * s == p2));
-//        std::cout << "---------------" << std::endl;
 
     }
     std::cout << "test_point_mult passed!" << std::endl;
+
+}
+
+void test_s256point(){
+
+    S256Field xg = {bmp::uint256_t("0x79be667ef9dcbbac55a06295ce870b07029bfcdb2dce28d959f2815b16f81798")};
+    S256Field yg = {bmp::uint256_t("0x483ada7726a3c4655da4fbfc0e1108a8fd17b448a68554199c47d08ffb10d4b8")};
+
+    auto P = bmp::uint256_t("0xfffffffffffffffffffffffffffffffffffffffffffffffffffffffefffffc2f");
+    auto N = bmp::uint256_t("0xfffffffffffffffffffffffffffffffebaaedce6af48a03bbfd25e8cd0364141");
+
+    S256Point G = {xg, yg};
+
+    Point p ;
+
+    p = S256Point(S256Field(bmp::uint256_t("0x5cbdf0646e5db4eaa398f365f2ea7a0e3d419b7e0330e39ce92bddedcac4f9bc")), S256Field(bmp::uint256_t("0x6aebca40ba255960a3178d6d861a54dba813d0b813fde7b5a5082628087264da")));
+    assert(G * 7 == p );
+
+
+    p = S256Point(S256Field(bmp::uint256_t("0xc982196a7466fbbbb0e27a940b6af926c1a74d5ad07128c82824a11b5398afda")), S256Field(bmp::uint256_t("0x7a91f9eae64438afb9ce6448a1c133db2d8fb9254e4546b6f001637d50901f55")));
+    assert(G * 1485 == p );
+
+    bmp::uint256_t m = bmp::uint256_t(std::pow(2,128));
+    p = S256Point(S256Field(bmp::uint256_t("0x8f68b9d2f63b5f339239c1ad981f162ee88c5678723ea3351b7b444c9ec4c0da")), S256Field(bmp::uint256_t("0x662a9f2dba063986de1d90c2b6be215dbbea2cfe95510bfdf23cbf79501fff82")));
+    assert(G * m == p );
+
+    std::cout << "test_s256point passed!" << std::endl;
 
 }
 
@@ -251,7 +276,10 @@ int test_main(){
     test_point_not_on_curve();
     test_point_add();
     test_point_mult();
+    test_s256point();
 
     std::cout << "All test passed successfully!" << std::endl;
     return 0;
 }
+
+
