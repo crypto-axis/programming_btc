@@ -1,0 +1,13 @@
+# ninja log v5
+0	1096	1671342545062085464	CMakeFiles/programming_btc.dir/AVLTree.cpp.o	d624623a0b779203
+1	22	1671349228864177005	build.ninja	69e370ff45a6a348
+3	2092	1671346555810689424	CMakeFiles/programming_btc.dir/main.cpp.o	25307d9674ed8b85
+3041	3110	1671346556826692539	programming_btc	4f62d03497da984f
+3	2326	1671346556046690147	CMakeFiles/programming_btc.dir/test_main.cpp.o	99903ddac226155c
+3	3041	1671346556758692330	CMakeFiles/programming_btc.dir/secp256k1.cpp.o	54cb28161c3a2c43
+0	25	1671349228864177005	build.ninja	69e370ff45a6a348
+3	1063	1671349229932175172	CMakeFiles/programming_btc.dir/AVLTree.cpp.o	d624623a0b779203
+3	2183	1671349231052173251	CMakeFiles/programming_btc.dir/main.cpp.o	25307d9674ed8b85
+4	2366	1671349231232172941	CMakeFiles/programming_btc.dir/test_main.cpp.o	99903ddac226155c
+3	3078	1671349231944171721	CMakeFiles/programming_btc.dir/secp256k1.cpp.o	54cb28161c3a2c43
+3078	3148	1671349232016171597	programming_btc	4f62d03497da984f
