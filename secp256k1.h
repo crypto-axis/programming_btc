@@ -11,16 +11,24 @@
 #include <boost/multiprecision/cpp_int.hpp>
 #include <boost/algorithm/hex.hpp>
 #include <boost/lexical_cast.hpp>
-#include <crypto/sha256.h>
+#include "picosha2.h"
+
 
 namespace bmp = boost::multiprecision;
 namespace ba = boost::algorithm;
+
+using string = std::string;
+
+using uint256_t = bmp::uint256_t;
+using int512_t = bmp::int512_t;
+using uint1024_t = bmp::uint1024_t;
+
 
 class FieldElement {
 
 public:
     FieldElement();
-    FieldElement(const bmp::uint256_t & num, const bmp::uint256_t & prime);
+    FieldElement(const uint256_t & num, const uint256_t & prime);
     ~FieldElement();
 
     bool operator==(FieldElement const& other) const;
@@ -28,16 +36,16 @@ public:
     FieldElement operator+(FieldElement const& other) const;
     FieldElement operator-(FieldElement const& other) const;
     FieldElement operator*(FieldElement const& other) const;
-    FieldElement operator*(bmp::uint256_t const& coefficient) const;
+    FieldElement operator*(uint256_t const& coefficient) const;
     FieldElement operator/(FieldElement const& other) const;
-    FieldElement pow(bmp::int512_t const& exponent) const;
-    std::string str() const;
+    FieldElement pow(int512_t const& exponent) const;
+    string str() const;
     bool is_infinity() const;
     void set_infinity();
     void set_infinity(bool b);
 
-    bmp::uint256_t num;
-    bmp::uint256_t prime;
+    uint256_t num;
+    uint256_t prime;
 
 protected:
     bool infinity;
@@ -45,10 +53,11 @@ protected:
 
 class S256Field : public FieldElement {
 public:
-    S256Field(const bmp::uint256_t & num);
-    std::string str() const;
+    S256Field(const uint256_t & num);
+    string str() const;
 
-    const bmp::uint256_t P = bmp::uint256_t("115792089237316195423570985008687907853269984665640564039457584007908834671663");
+
+    const uint256_t P = uint256_t("115792089237316195423570985008687907853269984665640564039457584007908834671663");
 };
 
 class Point{
@@ -59,8 +68,8 @@ public:
     bool operator==(Point const& other) const;
     bool operator!=(Point const& other) const;
     Point operator+(Point const& other);
-    Point operator*(bmp::int512_t const& coefficient);
-    std::string str() const;
+    Point operator*(int512_t const& coefficient);
+    string str() const;
 
 
     FieldElement a;
@@ -74,11 +83,14 @@ class S256Point : public Point {
 public:
     S256Point();
     S256Point(const S256Field& x, const S256Field& y);
-    Point operator*(bmp::int512_t const& coefficient);
+    S256Point(Point p);
+    Point operator*(int512_t const& coefficient);
+    string compressed();
+    string uncompressed();
 
-    const bmp::uint256_t A = 0;
-    const bmp::uint256_t B = 7;
-    const bmp::uint256_t N = bmp::uint256_t("0xfffffffffffffffffffffffffffffffebaaedce6af48a03bbfd25e8cd0364141");
+    const uint256_t A = 0;
+    const uint256_t B = 7;
+    const uint256_t N = uint256_t("0xfffffffffffffffffffffffffffffffebaaedce6af48a03bbfd25e8cd0364141");
 
 };
 

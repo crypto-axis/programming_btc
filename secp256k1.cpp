@@ -1,7 +1,6 @@
 //
 // Created by cc1 on 15/12/22.
 //
-
 #include "secp256k1.h"
 
 FieldElement::FieldElement() {
@@ -10,21 +9,21 @@ FieldElement::FieldElement() {
     this->infinity = true;
 }
 
-FieldElement::FieldElement(const bmp::uint256_t& num, const bmp::uint256_t& prime) {
+FieldElement::FieldElement(const uint256_t& num, const uint256_t& prime) {
     try{
-        if (num >= prime) throw std::string("num not in field range:(");
+        if (num >= prime) throw string("num not in field range:(");
         this->num = num;
         this->prime = prime;
         this->infinity = false;
     }
-    catch(std::string const& e){std::cout << e << num << ", " << prime << ")" << std::endl;}
+    catch(string const& e){std::cout << e << num << ", " << prime << ")" << std::endl;}
 }
 
 FieldElement::~FieldElement() = default;
 
-std::string FieldElement::str() const {
-//    std::string out = "FieldElement_" + boost::lexical_cast<std::string>(prime) + "{" + boost::lexical_cast<std::string>(num) + "}";
-    std::string out = "FieldElement{" + boost::lexical_cast<std::string>(num) + "}";
+string FieldElement::str() const {
+//    string out = "FieldElement_" + boost::lexical_cast<string>(prime) + "{" + boost::lexical_cast<string>(num) + "}";
+    string out = "FieldElement{" + boost::lexical_cast<string>(num) + "}";
     return out;
 }
 
@@ -45,20 +44,20 @@ bool FieldElement::operator!=(const FieldElement &other) const {
 
 FieldElement FieldElement::operator+(const FieldElement &other) const {
     try{
-        if (this->prime != other.prime) throw std::string("primes not match");
+        if (this->prime != other.prime) throw string("primes not match");
         // cast to uin1024 for avoid overflow on * operation
-        bmp::uint1024_t _num = (bmp::uint1024_t(this->num) + bmp::uint1024_t(other.num))% bmp::uint1024_t(this->prime);
-        return {bmp::uint256_t(_num), this->prime};
+        uint1024_t _num = (uint1024_t(this->num) + uint1024_t(other.num))% uint1024_t(this->prime);
+        return {uint256_t(_num), this->prime};
     }
 
-    catch(std::string const& e) { std::cerr << e ;}
+    catch(string const& e) { std::cerr << e ;}
     return {};
 }
 
 FieldElement FieldElement::operator-(const FieldElement &other) const {
     try{
         // cast to uin1024 for avoid overflow on * operation
-        if (this->prime != other.prime) throw std::string("primes not match!");
+        if (this->prime != other.prime) throw string("primes not match!");
         bmp::int1024_t a,b,c;
         a = bmp::int1024_t(this->num);
         b = bmp::int1024_t(other.num);
@@ -67,11 +66,11 @@ FieldElement FieldElement::operator-(const FieldElement &other) const {
         bmp::int1024_t n = (a - b)%c;
         if (n<0) n = n + this->prime;
 
-        auto out = bmp::uint256_t(n);
+        auto out = uint256_t(n);
 
         return {out, this->prime};
     }
-    catch(std::string const& e){std::cerr << e; return {};}
+    catch(string const& e){std::cerr << e; return {};}
 
 }
 
@@ -81,23 +80,23 @@ FieldElement FieldElement::operator*(const FieldElement &other) const {
 //    std::cout << "  this->prime =" << this->prime.str() << std::endl;
     try{
         //cast to uin1024 for avoid overflow on * operation
-        if (this->prime != other.prime) throw std::string("primes not match!");
+        if (this->prime != other.prime) throw string("primes not match!");
 
 //        std::cout << "-123-" << std::endl;
-        auto temp = bmp::uint1024_t(bmp::uint1024_t(this->num) * bmp::uint1024_t(other.num));
+        auto temp = uint1024_t(uint1024_t(this->num) * uint1024_t(other.num));
 //        std::cout << temp << std::endl;
-        temp = temp % bmp::uint1024_t(this->prime);
+        temp = temp % uint1024_t(this->prime);
 //        std::cout << temp << std::endl;
 //        std::cout << "-456-" << std::endl;
 
-        bmp::uint1024_t _num = (bmp::uint1024_t(this->num) * bmp::uint1024_t(other.num))% bmp::uint1024_t(this->prime);
+        uint1024_t _num = (uint1024_t(this->num) * uint1024_t(other.num))% uint1024_t(this->prime);
 //        std::cout << "  _num =" << _num.str() << std::endl;
-        auto _num2 = bmp::uint256_t(_num);
+        auto _num2 = uint256_t(_num);
 //        std::cout << "  return _num2 =" << _num2.str() << std::endl;
 //        std::cout << "  --- end-other"  << std::endl;
         return {_num2, this->prime};
     }
-    catch(std::string const& e){std::cerr << e;return {};}
+    catch(string const& e){std::cerr << e;return {};}
 
 }
 
@@ -106,32 +105,32 @@ FieldElement FieldElement::operator*(const boost::multiprecision::uint256_t &coe
 //    std::cout << "  this->num= =" << this->num.str() << ")" << std::endl;
 //    std::cout << "  this->prime= =" << this->prime.str() << ")" << std::endl;
     // cast to uin1024 for avoid overflow on * operation
-    bmp::uint1024_t _num = (bmp::uint1024_t(this->num) * bmp::uint1024_t(coefficient)) % bmp::uint1024_t(this->prime);
+    uint1024_t _num = (uint1024_t(this->num) * uint1024_t(coefficient)) % uint1024_t(this->prime);
 //    std::cout << "  _num =" << _num.str() << std::endl;
-    auto _num2 = bmp::uint256_t(_num);
+    auto _num2 = uint256_t(_num);
 //    std::cout << "  return _num2 =" << _num2.str() << std::endl;
 //    std::cout << "  --- end-coef"  << std::endl;
     return {_num2, this->prime};
 }
 
-FieldElement FieldElement::pow(const bmp::int512_t &exponent) const {
+FieldElement FieldElement::pow(const int512_t &exponent) const {
     // cast to uin1024 for avoid overflow on pow operation
     auto exp = bmp::int1024_t(exponent);
     while (exp < 0){
-        exp += bmp::uint1024_t(this->prime) - bmp::uint1024_t(1);
+        exp += uint1024_t(this->prime) - uint1024_t(1);
     }
-    bmp::uint1024_t _num = bmp::powm(bmp::uint1024_t(this->num),bmp::uint1024_t(exp),bmp::uint1024_t(this->prime));
-    return {bmp::uint256_t(_num), this->prime};
+    uint1024_t _num = bmp::powm(uint1024_t(this->num),uint1024_t(exp),uint1024_t(this->prime));
+    return {uint256_t(_num), this->prime};
 }
 
 FieldElement FieldElement::operator/(const FieldElement &other) const {
     try{
-            if (this->prime != other.prime) throw std::string("primes not match!");
-            bmp::uint1024_t _num = ((bmp::uint1024_t(this->num) * bmp::powm(bmp::uint1024_t(other.num), bmp::uint1024_t(this->prime) - 2,
-                                                                            bmp::uint1024_t(this->prime)))% bmp::uint1024_t(this->prime));
-            return {bmp::uint256_t(_num), this->prime};
+            if (this->prime != other.prime) throw string("primes not match!");
+            uint1024_t _num = ((uint1024_t(this->num) * bmp::powm(uint1024_t(other.num), uint1024_t(this->prime) - 2,
+                                                                            uint1024_t(this->prime)))% uint1024_t(this->prime));
+            return {uint256_t(_num), this->prime};
     }
-    catch(std::string const& e){std::cerr << e;return {};}
+    catch(string const& e){std::cerr << e;return {};}
 }
 
 bool FieldElement::is_infinity() const {
@@ -150,17 +149,17 @@ void FieldElement::set_infinity() {
 
 S256Field::S256Field(const boost::multiprecision::uint256_t &num) {
     try{
-        if (num >= P) throw std::string("num not in field range:(");
+        if (num >= P) throw string("num not in field range:(");
         this->num = num;
         this->prime = P;
         this->infinity = false;
     }
-    catch(std::string const& e){std::cout << e << num << ", " << prime << ")" << std::endl;}
+    catch(string const& e){std::cout << e << num << ", " << prime << ")" << std::endl;}
 
 }
 
-std::string S256Field::str() const {
-    std::string out = "FieldElement_secp256k1{" + boost::lexical_cast<std::string>(num) + "}";
+string S256Field::str() const {
+    string out = boost::lexical_cast<string>(num);
     return out;
 }
 
@@ -175,9 +174,9 @@ Point::Point(const FieldElement& x, const FieldElement& y, const FieldElement& a
 
     // check the point is on the curve
     try{
-        if ((y*y) != (x*x*x) + (a * x) + b) throw std::string("except");
+        if ((y*y) != (x*x*x) + (a * x) + b) throw string("except");
     }
-    catch (std::string){
+    catch (string){
         std::cout << "Point not on curve! => " ;
         std::cout << this->str() << std::endl;
         throw -1;
@@ -215,8 +214,8 @@ bool Point::operator!=(const Point &other) const {
     else return true;
 }
 
-std::string Point::str() const {
-    std::string out = "Point(x=" + this->x.str() + ", y="
+string Point::str() const {
+    string out = "Point(x=" + this->x.str() + ", y="
             + this->y.str() + ") [a="
             + this->a.str() + ") , b="
             + this->b.str() + "]" ;
@@ -234,7 +233,7 @@ Point Point::operator+(const Point &other) {
 
     try{
         // case 0.0
-        if (this->a != other.a or this->b != other.b) throw std::string("a or b not match!");
+        if (this->a != other.a or this->b != other.b) throw string("a or b not match!");
 
         //case 0.1
         if (this->x.is_infinity()) return other;
@@ -278,17 +277,17 @@ Point Point::operator+(const Point &other) {
         }
 
     }
-    catch(std::string const& e){std::cerr << e;return {};}
+    catch(string const& e){std::cerr << e;return {};}
 
 }
 
-Point Point::operator*(const bmp::int512_t &coefficient) {
+Point Point::operator*(const int512_t &coefficient) {
 
 //    std::cout << "Point::operator*(coefficient=" << coefficient.str() << ")" << std::endl;
     // point have no curve param
     if (this->a.is_infinity() or this->b.is_infinity()) return *this;
 
-    bmp::int512_t coef = coefficient;
+    int512_t coef = coefficient;
 
     Point current = *this;
     FieldElement _x = {0, this->a.prime};
@@ -325,9 +324,9 @@ S256Point::S256Point(const S256Field &x, const S256Field &y) {
 
     // check the point is on the curve
     try{
-        if ((y*y) != (x*x*x) + (a * x) + b) throw std::string("except");
+        if ((y*y) != (x*x*x) + (a * x) + b) throw string("except");
     }
-    catch (std::string){
+    catch (string){
         std::cout << "S256Point(const S256Field &x, const S256Field &y) => Point not on curve! => " ;
         std::cout << this->str() << std::endl;
         throw -1;
@@ -336,8 +335,35 @@ S256Point::S256Point(const S256Field &x, const S256Field &y) {
 
 }
 
+S256Point::S256Point(Point p) {
+    this->x = p.x;
+    this->y = p.y;
+    this->a = p.a;
+    this->b = p.b;
+
+}
+
 Point S256Point::operator*(const boost::multiprecision::int512_t &coefficient) {
 
-    bmp::int512_t coef = coefficient % N;
+    int512_t coef = coefficient % N;
     return Point::operator*(coef);
 }
+
+string S256Point::compressed() {
+    if (this->y.num % 2 == 0) {
+        std::stringstream ss;
+        ss << "02" << std::hex << this->x.num;
+        return ss.str();
+    }
+    else {
+        std::stringstream ss;
+        ss << "03" << std::hex << this->x.num;
+        return ss.str();
+    }
+}
+
+string S256Point::uncompressed() {
+    return  "04" + this->x.num.str() + this->y.num.str();
+}
+
+

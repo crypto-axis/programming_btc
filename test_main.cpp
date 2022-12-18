@@ -4,6 +4,9 @@
 #include "secp256k1.h"
 #include <cassert>
 
+
+
+
 void test_fieldelement(){
 
     // == !=
@@ -73,7 +76,7 @@ void test_fieldelement(){
 
 void test_point() {
 
-    bmp::uint256_t prime = 223;
+    uint256_t prime = 223;
 
     FieldElement a = {0, prime};
     FieldElement b = {7, prime};
@@ -98,7 +101,7 @@ void test_point() {
 }
 
 void test_point_not_on_curve(){
-    bmp::uint256_t prime = 223;
+    uint256_t prime = 223;
 
     FieldElement a = {0, prime};
     FieldElement b = {7, prime};
@@ -150,14 +153,14 @@ void test_point_not_on_curve(){
 
 void test_point_add(){
 
-    bmp::uint256_t prime = 223;
+    uint256_t prime = 223;
     FieldElement a ={0, prime};
     FieldElement b ={7, prime};
 
-    std::vector<std::vector<bmp::uint256_t>> v;
-    v.push_back(std::vector<bmp::uint256_t>{192, 105, 17, 56, 170, 142});
-    v.push_back(std::vector<bmp::uint256_t>{47, 71, 117, 141, 60, 139});
-    v.push_back(std::vector<bmp::uint256_t>{143, 98, 76, 66, 47, 71});
+    std::vector<std::vector<uint256_t>> v;
+    v.push_back(std::vector<uint256_t>{192, 105, 17, 56, 170, 142});
+    v.push_back(std::vector<uint256_t>{47, 71, 117, 141, 60, 139});
+    v.push_back(std::vector<uint256_t>{143, 98, 76, 66, 47, 71});
 
     FieldElement x1 = {};
     FieldElement y1= {};
@@ -198,17 +201,17 @@ void test_point_add(){
 
 void test_point_mult(){
 
-    bmp::uint256_t prime = 223;
+    uint256_t prime = 223;
     FieldElement a ={0, prime};
     FieldElement b ={7, prime};
 
-    std::vector<std::vector<bmp::uint256_t>> v;
-    v.push_back(std::vector<bmp::uint256_t>{2,192,105,49,71});
-    v.push_back(std::vector<bmp::uint256_t>{2,143,98,64,168});
-    v.push_back(std::vector<bmp::uint256_t>{2, 47, 71, 36, 111});
-    v.push_back(std::vector<bmp::uint256_t>{4, 47, 71, 194, 51});
-    v.push_back(std::vector<bmp::uint256_t>{8, 47, 71, 116, 55});
-    v.push_back(std::vector<bmp::uint256_t>{21, 47, 71,0,0});
+    std::vector<std::vector<uint256_t>> v;
+    v.push_back(std::vector<uint256_t>{2,192,105,49,71});
+    v.push_back(std::vector<uint256_t>{2,143,98,64,168});
+    v.push_back(std::vector<uint256_t>{2, 47, 71, 36, 111});
+    v.push_back(std::vector<uint256_t>{4, 47, 71, 194, 51});
+    v.push_back(std::vector<uint256_t>{8, 47, 71, 116, 55});
+    v.push_back(std::vector<uint256_t>{21, 47, 71,0,0});
 
     FieldElement x1 = {};
     FieldElement y1= {};
@@ -222,7 +225,7 @@ void test_point_mult(){
 
     for (auto i: v){
 //        std::cout << i[0] << "-" << i[1] << "-" << i[2] << "-" << i[3] << "-" << i[4] << "-" << std::endl;
-        bmp::uint256_t s = i[0];
+        uint256_t s = i[0];
 
         x1 = {i[1], prime} ;
         y1 = {i[2], prime} ;
@@ -245,28 +248,40 @@ void test_point_mult(){
 
 void test_s256point(){
 
-    S256Field xg = {bmp::uint256_t("0x79be667ef9dcbbac55a06295ce870b07029bfcdb2dce28d959f2815b16f81798")};
-    S256Field yg = {bmp::uint256_t("0x483ada7726a3c4655da4fbfc0e1108a8fd17b448a68554199c47d08ffb10d4b8")};
+    S256Field xg = {uint256_t("0x79be667ef9dcbbac55a06295ce870b07029bfcdb2dce28d959f2815b16f81798")};
+    S256Field yg = {uint256_t("0x483ada7726a3c4655da4fbfc0e1108a8fd17b448a68554199c47d08ffb10d4b8")};
 
-    auto P = bmp::uint256_t("0xfffffffffffffffffffffffffffffffffffffffffffffffffffffffefffffc2f");
-    auto N = bmp::uint256_t("0xfffffffffffffffffffffffffffffffebaaedce6af48a03bbfd25e8cd0364141");
+    auto P = uint256_t("0xfffffffffffffffffffffffffffffffffffffffffffffffffffffffefffffc2f");
+    auto N = uint256_t("0xfffffffffffffffffffffffffffffffebaaedce6af48a03bbfd25e8cd0364141");
 
     S256Point G = {xg, yg};
 
     Point p ;
 
-    p = S256Point(S256Field(bmp::uint256_t("0x5cbdf0646e5db4eaa398f365f2ea7a0e3d419b7e0330e39ce92bddedcac4f9bc")), S256Field(bmp::uint256_t("0x6aebca40ba255960a3178d6d861a54dba813d0b813fde7b5a5082628087264da")));
+    p = S256Point(S256Field(uint256_t("0x5cbdf0646e5db4eaa398f365f2ea7a0e3d419b7e0330e39ce92bddedcac4f9bc")), S256Field(uint256_t("0x6aebca40ba255960a3178d6d861a54dba813d0b813fde7b5a5082628087264da")));
     assert(G * 7 == p );
 
 
-    p = S256Point(S256Field(bmp::uint256_t("0xc982196a7466fbbbb0e27a940b6af926c1a74d5ad07128c82824a11b5398afda")), S256Field(bmp::uint256_t("0x7a91f9eae64438afb9ce6448a1c133db2d8fb9254e4546b6f001637d50901f55")));
+    p = S256Point(S256Field(uint256_t("0xc982196a7466fbbbb0e27a940b6af926c1a74d5ad07128c82824a11b5398afda")), S256Field(uint256_t("0x7a91f9eae64438afb9ce6448a1c133db2d8fb9254e4546b6f001637d50901f55")));
     assert(G * 1485 == p );
 
-    bmp::uint256_t m = bmp::uint256_t(std::pow(2,128));
-    p = S256Point(S256Field(bmp::uint256_t("0x8f68b9d2f63b5f339239c1ad981f162ee88c5678723ea3351b7b444c9ec4c0da")), S256Field(bmp::uint256_t("0x662a9f2dba063986de1d90c2b6be215dbbea2cfe95510bfdf23cbf79501fff82")));
+    uint256_t m = uint256_t(std::pow(2,128));
+    p = S256Point(S256Field(uint256_t("0x8f68b9d2f63b5f339239c1ad981f162ee88c5678723ea3351b7b444c9ec4c0da")), S256Field(uint256_t("0x662a9f2dba063986de1d90c2b6be215dbbea2cfe95510bfdf23cbf79501fff82")));
     assert(G * m == p );
 
     std::cout << "test_s256point passed!" << std::endl;
+
+}
+
+void test_pbk(){
+
+    S256Field xg = {uint256_t("0x79be667ef9dcbbac55a06295ce870b07029bfcdb2dce28d959f2815b16f81798")};
+    S256Field yg = {uint256_t("0x483ada7726a3c4655da4fbfc0e1108a8fd17b448a68554199c47d08ffb10d4b8")};
+    S256Point G = {xg, yg};
+
+    auto p = S256Point(G * 997002999);
+    string 
+    std::cout << p.compressed() << std::endl;
 
 }
 
@@ -277,8 +292,12 @@ int test_main(){
     test_point_add();
     test_point_mult();
     test_s256point();
+    test_pbk();
+
 
     std::cout << "All test passed successfully!" << std::endl;
+
+//    std::cout << picosha2::hash256_hex_string(string("test ")) << std::endl;
     return 0;
 }
 
