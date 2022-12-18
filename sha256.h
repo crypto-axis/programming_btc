@@ -1,1 +1,0 @@
-/home/cc1/cpp/bitcoin/src/crypto/sha256.h

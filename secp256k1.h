@@ -11,6 +11,7 @@
 #include <boost/multiprecision/cpp_int.hpp>
 #include <boost/algorithm/hex.hpp>
 #include <boost/lexical_cast.hpp>
+#include <crypto/sha256.h>
 
 namespace bmp = boost::multiprecision;
 namespace ba = boost::algorithm;
