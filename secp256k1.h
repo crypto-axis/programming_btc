@@ -84,6 +84,7 @@ public:
     S256Point();
     S256Point(const S256Field& x, const S256Field& y);
     S256Point(Point p);
+    S256Point operator=(S256Point p);
     Point operator*(int512_t const& coefficient);
     string compressed();
     string uncompressed();

@@ -363,7 +363,17 @@ string S256Point::compressed() {
 }
 
 string S256Point::uncompressed() {
-    return  "04" + this->x.num.str() + this->y.num.str();
+    std::stringstream ss;
+    ss << "04" << std::hex << this->x.num << std::hex << this->y.num;
+    return  ss.str();
+}
+
+S256Point S256Point::operator=(S256Point p) {
+    this->x = p.x;
+    this->y = p.y;
+    this->a = p.a;
+    this->b = p.b;
+    return *this;
 }
 
 
