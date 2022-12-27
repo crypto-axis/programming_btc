@@ -377,3 +377,39 @@ S256Point S256Point::operator=(S256Point p) {
 }
 
 
+PVKey::PVKey(string pv) {
+
+    uint256_t _pv = uint256_t(pv);
+
+    Point _p = G * _pv;
+
+    this->p = S256Point(_p);
+
+}
+
+string PVKey::pb_compressed() {
+    return this->p.compressed();
+}
+
+string PVKey::pb_uncompressed() {
+    return this->p.uncompressed();
+}
+
+PVKey PVKey::from_uncompressed(string ucp) {
+    if (ucp.length() == 130){
+        string x = "0x" + ucp.substr(2,64);
+        string y = "0x" + ucp.substr(66,64);
+
+        return PVKey(S256Field(uint256_t(x)), S256Field(uint256_t(y)));
+
+    }
+    else{
+        std::cerr << "uncompressed key length might be 130 char lenght in hex format!!!" << std::endl;
+    }
+
+    return PVKey("");
+}
+
+PVKey::PVKey(S256Field x, S256Field y) {
+    p = S256Point(x, y);
+}
