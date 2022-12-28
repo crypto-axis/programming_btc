@@ -7,18 +7,24 @@
 
 #include <string>
 #include <iostream>
+#include <fstream>
 #include <vector>
 #include <boost/multiprecision/cpp_int.hpp>
 #include <boost/algorithm/hex.hpp>
 #include <boost/lexical_cast.hpp>
-#include "picosha2.h"
+//#include <boost/multiprecision/gmp.hpp>
+#include <boost/multiprecision/random.hpp>
+#include <boost/random/uniform_int_distribution.hpp>
+#include <boost/random.hpp>
+#include "AVLTree.h"
 
 
-namespace bmp = boost::multiprecision;
+
 namespace ba = boost::algorithm;
 
 using string = std::string;
 
+namespace bmp = boost::multiprecision;
 using uint256_t = bmp::uint256_t;
 using int512_t = bmp::int512_t;
 using uint1024_t = bmp::uint1024_t;
@@ -95,20 +101,27 @@ public:
 
 };
 
-class PVKey{
+class Key{
 
 public:
-    PVKey(string pv);
-    PVKey(S256Field x, S256Field y);
+    Key();
+    Key(string pv);
+    Key(S256Field x, S256Field y);
     string pb_compressed();
     string pb_uncompressed();
-    static PVKey from_uncompressed(string ucp);
+    string pb_compressed_hash();
+    string pb_uncompressed_hash();
+    static Key from_uncompressed(string ucp);
+    uint256_t get_k();
+    void incr();
+
 
 private:
     S256Point G = {S256Field(uint256_t("0x79be667ef9dcbbac55a06295ce870b07029bfcdb2dce28d959f2815b16f81798"))
             , S256Field(uint256_t("0x483ada7726a3c4655da4fbfc0e1108a8fd17b448a68554199c47d08ffb10d4b8"))};
 
     S256Point p;
+    uint256_t k;
 };
 
 

@@ -2,6 +2,7 @@
 // Created by cc1 on 15/12/22.
 //
 #include "secp256k1.h"
+#include "hash.h"
 
 FieldElement::FieldElement() {
     this->num = 1;
@@ -283,8 +284,7 @@ Point Point::operator+(const Point &other) {
 
 Point Point::operator*(const int512_t &coefficient) {
 
-//    std::cout << "Point::operator*(coefficient=" << coefficient.str() << ")" << std::endl;
-    // point have no curve param
+
     if (this->a.is_infinity() or this->b.is_infinity()) return *this;
 
     int512_t coef = coefficient;
@@ -303,9 +303,8 @@ Point Point::operator*(const int512_t &coefficient) {
 //            std::cout << "result = result + current =" << result.str() << std::endl;
         }
         current = current + current;
-//        std::cout << "current = current + current" << current.str() << std::endl;
         coef = coef >> 1;
-//        std::cout << "coef = coef >> 1 = " << coef.str() << std::endl;
+
     }
     return result;
 
@@ -377,39 +376,60 @@ S256Point S256Point::operator=(S256Point p) {
 }
 
 
-PVKey::PVKey(string pv) {
+Key::Key(string pv) {
 
-    uint256_t _pv = uint256_t(pv);
-
-    Point _p = G * _pv;
+    this->k = uint256_t(pv);
+    Point _p = G * this->k;
 
     this->p = S256Point(_p);
 
 }
 
-string PVKey::pb_compressed() {
+string Key::pb_compressed() {
     return this->p.compressed();
 }
 
-string PVKey::pb_uncompressed() {
+string Key::pb_uncompressed() {
     return this->p.uncompressed();
 }
 
-PVKey PVKey::from_uncompressed(string ucp) {
+Key Key::from_uncompressed(string ucp) {
     if (ucp.length() == 130){
         string x = "0x" + ucp.substr(2,64);
         string y = "0x" + ucp.substr(66,64);
 
-        return PVKey(S256Field(uint256_t(x)), S256Field(uint256_t(y)));
+        return Key(S256Field(uint256_t(x)), S256Field(uint256_t(y)));
 
     }
     else{
         std::cerr << "uncompressed key length might be 130 char lenght in hex format!!!" << std::endl;
     }
 
-    return PVKey("");
+    return Key("");
 }
 
-PVKey::PVKey(S256Field x, S256Field y) {
+Key::Key(S256Field x, S256Field y) {
     p = S256Point(x, y);
+}
+
+string Key::pb_compressed_hash() {
+    return hash160(this->pb_compressed());
+}
+
+string Key::pb_uncompressed_hash() {
+    return hash160(this->pb_uncompressed());
+}
+
+Key::Key() {
+
+}
+
+uint256_t Key::get_k() {
+    return this->k;
+}
+
+void Key::incr() {
+    this->k++;
+    this->p = this->p + this->G;
+
 }
