@@ -2,7 +2,13 @@
 #include "secp256k1.h"
 #include <chrono>
 #include "test_main.h"
-//#include "hash.h"
+
+#include <fcntl.h>
+#include <sys/stat.h>
+
+#include <unistd.h>
+
+
 
 AVLTree* load_pub_key(){
     // Load public keys
@@ -122,6 +128,14 @@ int main(){
     time_t start = std::time(nullptr);
     time_t actual;
 
+    // init named pipe
+    const char* name = "/home/cc1/ccp/programming_btc/test_pipe";
+    mkfifo(name, 0666);
+    std::stringstream message;
+
+    int fifo_stream = open(name,O_WRONLY);
+
+
 //    uint256_t seed = 0xfffffffffffffffffff;
     while (true){
 //        seed++;
@@ -159,22 +173,18 @@ int main(){
                 actual = std::time(nullptr);
                 std::cout << "Total:" << count << " - " << (count - last_count) << " in " << (actual - start) << "sec."
                           << std::endl;
+                message << (count-last_count) << ":" << (actual-start);
+                write(fifo_stream, message.str().c_str(), strlen(message.str().c_str()));
+                message.clear();
                 start = actual;
                 last_count = count;
             }
 //            std::cout << pbk << std::endl;
         }
 
-
+        close(fifo_stream);
 
     }
-
-
-
-
-
-
-
-
+    
     return 0;
 }
